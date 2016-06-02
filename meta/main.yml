@@ -1,0 +1,3 @@
+---
+# Cf. https://docs.ansible.com/ansible/playbooks_roles.html#task-include-files-and-encouraging-reuse
+allow_duplicates: no

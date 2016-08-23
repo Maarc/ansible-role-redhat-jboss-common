@@ -1,5 +1,9 @@
 ---
 
+- name: Fail for missing "remote_user"
+  fail: msg="This role requires remote_user to be set and non empty. Please refer to the README."
+  when: remote_user is not defined or remote_user == '')
+
 - name: (00) Install Java and basic RPM dependencies
   become: true
   yum: name={{ item }} state=present
@@ -16,7 +20,6 @@
 
 # Set in the DEV environment during the first setup
 - name: (00) {dev} Copy .bashrc
-  when: env == "dev"
   template:
     src: .bashrc.j2
     dest: "/home/{{ remote_user }}/.bashrc"
@@ -26,5 +29,5 @@
 # Set in the DEV environment during the first setup
 - name: (00) {dev} Set server timezone
   become: true
-  when: bashrc_uploaded.changed == True and env == "dev"
+  when: bashrc_uploaded.changed == True
   command: "timedatectl set-timezone {{ timezone }}"

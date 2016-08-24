@@ -4,6 +4,10 @@
   fail: msg="This role requires remote_user to be set and non empty. Please refer to the README."
   when: remote_user is not defined or remote_user == ''
 
+- name: Fail for missing "download_dir"
+  fail: msg="This role requires download_dir to be set and non empty. Please refer to the README."
+  when: download_dir is not defined or download_dir == ''
+
 - name: (00) Install Java and basic RPM dependencies
   become: true
   yum: name={{ item }} state=present

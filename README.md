@@ -52,5 +52,5 @@ License
 Author Information
 ------------------
 
-* [Marc Zottner] (https://github.com/Maarc)
-* [Roeland van de Pol] (https://github.com/roelandpol)
+* [Marc Zottner](https://github.com/Maarc)
+* [Roeland van de Pol](https://github.com/roelandpol)

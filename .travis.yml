@@ -5,19 +5,17 @@ python: "2.7"
 sudo: required
 dist: trusty
 
-matrix:
-  include:
+env:
+  global:
+    - ANSIBLE_HOST_KEY_CHECKING=False
+  matrix:
     - env: ANSIBLE_VERSION=1.9.5
     - env: ANSIBLE_VERSION=2.1.0
     - env: ANSIBLE_VERSION=2.1.1.0
 
-env:
-  global:
-    - ANSIBLE_HOST_KEY_CHECKING=False
-
 before_install:
  - sudo apt-get update -qq -y
- - sudo apt-get install -qq -y python-apt python-pycurl locales software-properties-common python-pip
+ - sudo apt-get install -qq -y python-apt python-pycurl locales python-pip
 
 install:
  - sudo pip install ansible==$ANSIBLE_VERSION
@@ -30,11 +28,11 @@ script:
   - ansible-playbook -i inventory tests/test.yml --syntax-check
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+  - ansible-playbook -i inventory --syntax-check --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-      ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+      ansible-playbook -i inventory --syntax-check --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)

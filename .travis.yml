@@ -28,11 +28,11 @@ script:
   - ansible-playbook -i inventory tests/test.yml --syntax-check
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i inventory --syntax-check --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+  - ansible-playbook -i inventory --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-      ansible-playbook -i inventory --syntax-check --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+      ansible-playbook -i inventory --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)

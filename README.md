@@ -25,7 +25,11 @@ Please have a look at [this example](https://github.com/Maarc/ansible_middleware
 Requirements
 ------------
 
-Red Hat Enterprise Linux 7.
+This has been tested on Ansible 1.9.4 and higher. It requires Red Hat Enterprise Linux 7.
+
+To install:
+
+  ansible-galaxy install Maarc.rh-jboss-common
 
 
 Dependencies

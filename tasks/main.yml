@@ -28,5 +28,5 @@
 # Set in the DEV environment during the first setup
 - name: (00) Set server timezone
   become: true
-  when: bashrc_uploaded.changed == True
+  when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
   command: "timedatectl set-timezone {{ timezone }}"

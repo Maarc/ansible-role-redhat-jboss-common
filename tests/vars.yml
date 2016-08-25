@@ -1,0 +1,5 @@
+---
+
+java_pkg_name: java-1.8.0-openjdk-devel
+timezone: Europe/Berlin
+download_dir: '/tmp'

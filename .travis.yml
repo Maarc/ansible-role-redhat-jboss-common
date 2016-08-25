@@ -5,24 +5,40 @@ python: "2.7"
 sudo: required
 dist: trusty
 
+matrix:
+  include:
+    - env: ANSIBLE_VERSION=1.9.5
+    - env: ANSIBLE_VERSION=2.1.0
+    - env: ANSIBLE_VERSION=2.1.1.0
+
 env:
   global:
     # Ignore host checks
     - ANSIBLE_HOST_KEY_CHECKING=False
 
+before_install:
+ - sudo apt-get update -qq -y
+ - sudo apt-get install -qq -y python-apt python-pycurl locales software-properties-common python-pip
+
 install:
-  # Install ansible
-  - pip install ansible==2.1.1.0
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+ - sudo pip install ansible==${ANSIBLE_VERSION}
+ - ansible --version
 
 script:
-  # Basic role syntax check
-  - ansible-playbook -i tests/inventory tests/main.yml --syntax-check
+  - echo localhost > inventory
+
+  # Syntax check
+  - ansible-playbook -i inventory tests/test.yml --syntax-check
+
+  # Play test
+  - ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+
+  # Idempotence test
+  - >
+      ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+      | grep -q 'changed=0.*failed=0'
+      && (echo 'Idempotence test: pass' && exit 0)
+      || (echo 'Idempotence test: fail' && exit 1)
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

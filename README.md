@@ -25,7 +25,7 @@ Please have a look at [this example](https://github.com/Maarc/ansible_middleware
 Requirements
 ------------
 
-The main requirement for this role is RHEL 7.
+Red Hat Enterprise Linux 7.
 
 
 Dependencies

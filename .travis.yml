@@ -9,9 +9,9 @@ env:
   global:
     - ANSIBLE_HOST_KEY_CHECKING=False
   matrix:
-    - env: ANSIBLE_VERSION=1.9.5
-    - env: ANSIBLE_VERSION=2.1.0
-    - env: ANSIBLE_VERSION=2.1.1.0
+    - ANSIBLE_VERSION=1.9.5
+    - ANSIBLE_VERSION=2.1.0
+    - ANSIBLE_VERSION=2.1.1.0
 
 before_install:
  - sudo apt-get update -qq -y

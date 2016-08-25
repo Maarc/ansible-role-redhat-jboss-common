@@ -27,15 +27,17 @@ Requirements
 
 This has been tested on Ansible 1.9.4 and higher. It requires Red Hat Enterprise Linux 7.
 
-To install:
-
-  ansible-galaxy install Maarc.rh-jboss-common
-
 
 Dependencies
 ------------
 
 None.
+
+
+Installation
+------------
+
+  ansible-galaxy install Maarc.rh-jboss-common
 
 
 Role Variables

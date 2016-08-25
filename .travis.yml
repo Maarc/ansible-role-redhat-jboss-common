@@ -1,41 +1,43 @@
----
 sudo: required
 language: python
 python: "2.7"
-
-dist: trusty
 
 env:
   global:
     - ANSIBLE_HOST_KEY_CHECKING=False
   matrix:
-    - ANSIBLE_VERSION=1.9.5
-    - ANSIBLE_VERSION=2.1.0
+  #    - ANSIBLE_VERSION=1.9.5
+  #    - ANSIBLE_VERSION=2.1.0
     - ANSIBLE_VERSION=2.1.1.0
 
 before_install:
- - sudo apt-get update -qq -y
- - sudo apt-get install -qq -y python-apt python-pycurl locales python-pip
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -o Dpkg::Options::="--force-confnew" docker-engine
 
 install:
- - sudo pip install ansible==$ANSIBLE_VERSION
- - ansible --version
+  - sudo pip install ansible==$ANSIBLE_VERSION
+  - sudo pip install docker-py
+  - sudo pip install six --upgrade
+  - sudo apt-get install -y sshpass
+  - ansible-galaxy install -r tests/requirements.yml -p tests/roles
+
+services:
+  - docker
 
 script:
-  - echo localhost > inventory
 
   # Syntax check
-  - ansible-playbook -i inventory tests/test.yml --syntax-check
+  - ansible-playbook -i tests/inventory tests/syntax-check.yml --syntax-check
 
   # List tasks
-  - ansible-playbook -i inventory tests/test.yml --list-tasks
+  - ansible-playbook -i tests/inventory tests/syntax-check.yml --list-tasks
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i inventory tests/test.yml --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/test.yml
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-      ansible-playbook -i inventory tests/test.yml --connection=local --sudo
+      ansible-playbook -i tests/inventory tests/test.yml
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)

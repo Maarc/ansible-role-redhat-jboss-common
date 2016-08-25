@@ -25,7 +25,7 @@ Please have a look at [this example](https://github.com/Maarc/ansible_middleware
 Requirements
 ------------
 
-This has been tested on Ansible 1.9.4 and higher. It requires Red Hat Enterprise Linux 7.
+This role has been tested on Ansible 2.0.2.0 and 2.1.1.0. It requires Red Hat Enterprise Linux 7.
 
 
 Dependencies

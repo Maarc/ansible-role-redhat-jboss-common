@@ -1,3 +1,0 @@
-container_inventory:
-  - name: centos7
-    image: "chrismeyers/centos7"

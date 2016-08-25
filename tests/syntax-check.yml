@@ -1,4 +1,0 @@
-- hosts: docker_hosts
-  gather_facts: false
-  roles:
-  - rh-jboss-common

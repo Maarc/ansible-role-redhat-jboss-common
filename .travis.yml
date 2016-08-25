@@ -32,8 +32,22 @@ install:
 script:
   # Ensure any invocation of ansible-playbook (i.e. sudo) results in host_key_checking disabled
   - sudo ansible all -i "127.0.0.1," -m lineinfile -a "regexp=^#host_key_checking dest=/etc/ansible/ansible.cfg line='host_key_checking = False'" -c local
+
+  # Syntax check
   - ansible-playbook -i test/inventory test/main.yml --syntax-check
+
+  # List tasks
+  - ansible-playbook -i test/inventory test/main.yml --list-tasks
+
+  # Run the role/playbook with ansible-playbook.
   - sudo ansible-playbook -i test/inventory test/main.yml
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+      sudo ansible-playbook -i test/inventory test/main.yml
+      | grep -q 'changed=0.*failed=0'
+      && (echo 'Idempotence test: pass' && exit 0)
+      || (echo 'Idempotence test: fail' && exit 1)
 
 notifications:
   # notify ansible galaxy of test results

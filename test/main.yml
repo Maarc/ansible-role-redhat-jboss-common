@@ -5,7 +5,7 @@
   vars:
     inventory:
       - name: rh-jboss-common_host1
-        image: "chrismeyers/centos7"
+        image: "centos"
   roles:
     - role: provision_docker
       provision_docker_inventory: "{{ inventory }}"

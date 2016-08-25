@@ -19,14 +19,14 @@
    - vim
 
 # Set in the DEV environment during the first setup
-- name: (00) {dev} Copy .bashrc
+- name: (00) Copy .bashrc
   template:
     src: .bashrc.j2
     dest: "{{ ansible_env.HOME}}/.bashrc"
   register: bashrc_uploaded
 
 # Set in the DEV environment during the first setup
-- name: (00) {dev} Set server timezone
+- name: (00) Set server timezone
   become: true
   when: bashrc_uploaded.changed == True
-  timezone: name={{ timezone }}
+  command: "timedatectl set-timezone {{ timezone }}"

@@ -1,5 +1,4 @@
 ---
-remote_user: root
 download_dir: '/tmp'
 java_pkg_name: java-1.8.0-openjdk-devel
 timezone: Europe/Berlin

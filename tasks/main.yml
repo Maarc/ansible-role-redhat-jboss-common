@@ -1,10 +1,6 @@
 ---
 
-- name: Fail for missing "remote_user"
-  fail: msg="This role requires remote_user to be set and non empty. Please refer to the README."
-  when: remote_user is not defined or remote_user == ''
-
-- name: Fail for missing "download_dir"
+- name: (00) Fail for missing "download_dir"
   fail: msg="This role requires download_dir to be set and non empty. Please refer to the README."
   when: download_dir is not defined or download_dir == ''
 
@@ -33,4 +29,4 @@
 - name: (00) {dev} Set server timezone
   become: true
   when: bashrc_uploaded.changed == True
-  command: "timedatectl set-timezone {{ timezone }}"
+  timezone: name={{ timezone }}

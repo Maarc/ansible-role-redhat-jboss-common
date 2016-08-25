@@ -8,6 +8,9 @@ services:
 env:
   global:
     - PATH="/usr/bin:$PATH"
+  matrix:
+    - ANSIBLE_VERSION=2.0.2.0
+    - ANSIBLE_VERSION=2.1.1.0
 
 before_install:
     # Ansible doesn't play well with virtualenv

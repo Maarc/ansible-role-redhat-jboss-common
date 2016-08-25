@@ -13,7 +13,7 @@
 - name: Run tests
   hosts: docker_containers
   vars_files:
-    - var/test.yml
+    - vars/rh-jboss-common.yml
   roles:
     - rh-jboss-common
 

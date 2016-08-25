@@ -27,12 +27,15 @@ script:
   # Syntax check
   - ansible-playbook -i inventory tests/test.yml --syntax-check
 
+  # List tasks
+  - ansible-playbook -i inventory tests/test.yml --list-tasks
+
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i inventory --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+  - ansible-playbook -i inventory tests/test.yml
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-      ansible-playbook -i inventory --list-tasks tests/test.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
+      ansible-playbook -i inventory tests/test.yml
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)

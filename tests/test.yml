@@ -1,6 +1,6 @@
 ---
-- hosts: "{{hosts_group|default('all')}}"
+- hosts: localhost
   vars_files:
-    - 'vars.yml'
+    - vars.yml
   roles:
-    - "{{role_name|default('rh-jboss-common')}}"
+    - rh-jboss-common

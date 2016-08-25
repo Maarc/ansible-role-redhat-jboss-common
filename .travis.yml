@@ -13,7 +13,6 @@ matrix:
 
 env:
   global:
-    # Ignore host checks
     - ANSIBLE_HOST_KEY_CHECKING=False
 
 before_install:
@@ -21,7 +20,7 @@ before_install:
  - sudo apt-get install -qq -y python-apt python-pycurl locales software-properties-common python-pip
 
 install:
- - sudo pip install ansible==${ANSIBLE_VERSION}
+ - sudo pip install ansible==$ANSIBLE_VERSION
  - ansible --version
 
 script:
@@ -30,10 +29,10 @@ script:
   # Syntax check
   - ansible-playbook -i inventory tests/test.yml --syntax-check
 
-  # Play test
+  # Run the role/playbook with ansible-playbook.
   - ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
 
-  # Idempotence test
+  # Run the role/playbook again, checking to make sure it's idempotent.
   - >
       ansible-playbook -i inventory --syntax-check --list-tasks tests/main.yml -e "role_name=rh-jboss-common" -e "hosts_group=localhost"
       | grep -q 'changed=0.*failed=0'

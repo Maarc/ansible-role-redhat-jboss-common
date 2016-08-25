@@ -4,13 +4,13 @@ Ansible role: "Red Hat JBoss common" [![Build Status](https://travis-ci.org/Maar
 Description
 -----------
 
-This role installs the prerequisites for the Red Hat JBoss middleware products specific roles like:
+Installs the prerequisites for the Red Hat JBoss middleware products specific roles like:
 
 - [Red Hat JBoss Enterprise Application Platform (EAP)](https://github.com/Maarc/ansible-role-redhat-jboss-eap)
 - [Red Hat JBoss Web Server (JWS) - Apache HTTPD](https://github.com/Maarc/ansible-role-redhat-jboss-web-server-httpd)
 - [Red Hat JBoss Web Server (JWS) - Apache Tomcat](https://github.com/Maarc/ansible-role-redhat-jboss-web-server-tomcat)
 
-It sets the timezone, some shell aliases and installs the following packages:
+This role sets the timezone, some shell aliases and installs the following packages:
 
 - unzip
 - java
@@ -31,7 +31,7 @@ The main requirement for this role is RHEL 7.
 Dependencies
 ------------
 
-No Ansible role is required to use this role.
+None.
 
 
 Role Variables

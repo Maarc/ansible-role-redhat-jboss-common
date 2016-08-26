@@ -1,7 +1,7 @@
 ---
 
 - name: (00) Fail for missing "download_dir"
-  fail: msg="This role requires download_dir to be set and non empty. Please refer to the README."
+  fail: msg="This role requires 'download_dir' to be set and non empty. Please refer to the README."
   when: download_dir is not defined or download_dir == ''
 
 - name: (00) Install Java and basic RPM dependencies

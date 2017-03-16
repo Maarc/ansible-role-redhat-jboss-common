@@ -18,6 +18,9 @@ This role sets the timezone, some shell aliases and installs the following packa
 - net-tools (for netstat)
 - psmisc (for pstree)
 - vim (for vimdiff)
+- telnet
+- bc (needed for memstat.sh)
+- memstat.sh (a memory usage display utility)
 
 Please have a look at [this example](https://github.com/Maarc/ansible_middleware_soe) showing how to easily operate Red Hat JBoss middleware products using this role.
 
@@ -32,6 +35,15 @@ Dependencies
 ------------
 
 None.
+
+
+Dependend on this role
+----------------------
+This is a base role for
+- ansible-role-redhat-jboss-eap
+- ansible-role-redhat-fuse
+
+
 
 
 Installation

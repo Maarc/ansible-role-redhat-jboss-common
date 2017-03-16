@@ -4,11 +4,18 @@
   fail: msg="This role requires 'download_dir' to be set and non empty. Please refer to the README."
   when: download_dir is not defined or download_dir == ''
 
+- name: (00) Create the download_dir if it does not exist  {{ download_dir }}
+  file:
+    path: "{{ download_dir }}"
+    state: directory
+    mode: 0755
+
 - name: (00) Install Java and basic RPM dependencies
   become: true
   yum: name={{ item }} state=present
   with_items:
    - unzip
+   - zip
    - "{{ java_pkg_name }}"
    - rsync
    # for netstat
@@ -17,6 +24,12 @@
    - psmisc
    # for vimdiff
    - vim
+   - telnet
+   - lsof
+   - screen
+   # for memstat.sh
+   - bc
+
 
 # Set in the DEV environment during the first setup
 - name: (00) Copy .bashrc
@@ -26,7 +39,39 @@
   register: bashrc_uploaded
 
 # Set in the DEV environment during the first setup
-- name: (00) Set server timezone
+- name: (00) Set server timezone to {{ timezone }}
   become: true
   when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
   command: "timedatectl set-timezone {{ timezone }}"
+
+# Set in the DEV environment during the first setup
+- name: (00) Set server Locale to {{ locale }}
+  become: true
+  when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
+  command: "localectl set-locale LANG={{ locale }}"
+
+- name: (00) Set default clock to UTC
+  become: true
+  when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
+  command: "timedatectl set-local-rtc 0"
+
+- name: (00) force clock (chrony) to current timepoint
+  become: true
+  when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
+  command: "chronyc -a makestep"
+
+- name: (00) create root bin directory
+  become: true
+  file:
+    path: /root/bin
+    state: directory
+    mode: 0700
+
+- name: (00) copy memstat.sh to /root/bin
+  become: true
+  copy:
+    src: memstat.sh
+    dest: /root/bin/memstat.sh
+    owner: root
+    group: root
+    mode: 0700

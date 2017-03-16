@@ -58,8 +58,9 @@ Role Variables
 | Name              | Default Value       | Description          |
 |-------------------|---------------------|----------------------|
 | `java_pkg_name` | `java-1.8.0-openjdk-devel` | Used Java 8 JDK. See [recommendation](https://access.redhat.com/solutions/18259). |
-| `timezone` | `Europe/Berlin` |  Timezone for the hosts and the logs. |
-| `download_dir` | `/tmp` | Directory containing all downloaded middleware  on the managed remote host. |
+| `timezone` | `Europe/Amsterdam` |  Timezone for the hosts and the logs. |
+| `download_dir` | `/tmp/rh-jboss-repo` | Directory containing all downloaded middleware  on the managed remote host. |
+| `locale` | `en_US.UTF-8` | Default Locale for system |
 
 
 License

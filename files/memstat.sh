@@ -24,19 +24,19 @@ get_process_mem ()
 {
 PID=$1
 #we need to check if 2 files exist
-if [ -f /proc/$PID/status ];
+if [ -f /proc/${PID}/status ];
 then
-	if [ -f /proc/$PID/smaps ]; 
+	if [ -f /proc/${PID}/smaps ];
 	then
 		#here we count memory usage, Pss, Private and Shared = Pss-Private
-		Pss=`cat /proc/$PID/smaps | grep -e "^Pss:" | awk '{print $2}'| paste -sd+ | bc `
-		Private=`cat /proc/$PID/smaps | grep -e "^Private" | awk '{print $2}'| paste -sd+ | bc `
+		Pss=`cat /proc/${PID}/smaps | grep -e "^Pss:" | awk '{print $2}'| paste -sd+ | bc `
+		Private=`cat /proc/${PID}/smaps | grep -e "^Private" | awk '{print $2}'| paste -sd+ | bc `
 		#we need to be sure that we count Pss and Private memory, to avoid errors
 		if [ x"$Rss" != "x" -o x"$Private" != "x" ]; 
 		then
 
 			let Shared=${Pss}-${Private}
-			Name=`cat /proc/$PID/status | grep -e "^Name:" |cut -d':' -f2`
+			Name=`cat /proc/${PID}/status | grep -e "^Name:" |cut -d':' -f2`
 			#we keep all results in bytes
 			let Shared=${Shared}*1024
 			let Private=${Private}*1024
@@ -67,7 +67,7 @@ do
 done
 
 #this part get b,kb,mb or gb according to number of divisions 
-case $power in
+case ${power} in
 	0) reg=b;;
 	1) reg=kb;;
 	2) reg=mb;;
@@ -87,9 +87,9 @@ echo -n "${value} ${reg} "
 if [ $# -eq 0 ]
 then
 	pids=`ls /proc | grep -e [0-9] | grep -v [A-Za-z] `
-	for i in $pids
+	for i in ${pids}
 	do
-	get_process_mem $i >> /tmp/res
+	get_process_mem ${i} >> /tmp/res
 	done
 else
 	get_process_mem $1>> /tmp/res
@@ -100,20 +100,20 @@ fi
 cat /tmp/res | sort -gr -k 5 > /tmp/res2
 
 #this part will get uniq names from process list, and we will add all lines with same process list 
-#we will count nomber of processes with same name, so if more that 1 process where will be
+#we will count number of processes with same name, so if more that 1 process where will be
 # process(2) in output
 for Name in `cat /tmp/res2 | awk '{print $6}' | sort  | uniq`
 do
-count=`cat /tmp/res2 | awk -v src=$Name '{if ($6==src) {print $6}}'|wc -l| awk '{print $1}'`
-if [ $count = "1" ];
+count=`cat /tmp/res2 | awk -v src=${Name} '{if ($6==src) {print $6}}'|wc -l| awk '{print $1}'`
+if [ ${count} = "1" ];
 then
 	count=""
 else 
 	count="(${count})"
 fi
 
-VmSizeKB=`cat /tmp/res2 | awk -v src=$Name '{if ($6==src) {print $1}}' | paste -sd+ | bc`
-VmRssKB=`cat /tmp/res2 | awk -v src=$Name '{if ($6==src) {print $3}}' | paste -sd+ | bc`
+VmSizeKB=`cat /tmp/res2 | awk -v src=${Name} '{if ($6==src) {print $1}}' | paste -sd+ | bc`
+VmRssKB=`cat /tmp/res2 | awk -v src=${Name} '{if ($6==src) {print $3}}' | paste -sd+ | bc`
 total=`cat /tmp/res2 | awk '{print $5}' | paste -sd+ | bc`
 Sum=`echo "${VmRssKB}+${VmSizeKB}"|bc`
 #all result stored in /tmp/res3 file
@@ -129,10 +129,10 @@ echo -e "Private \t + \t Shared \t = \t RAM used \t Program"
 #after we read line by line of temp file
 while read line 
 do
-	echo $line | while read  a b c d e f
+	echo ${line} | while read  a b c d e f
 	do
 #we print all processes if Ram used if not 0
-		if [ $e != "0" ]; then
+		if [ ${e} != "0" ]; then
 #here we use function that make conversion 
 		echo -en "`convert $a`  \t $b \t `convert $c`  \t $d \t `convert $e`  \t $f"
 		echo ""

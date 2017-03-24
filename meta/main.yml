@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Marc Zottner
+  #author: Marc Zottner
   author: Huub Daems
   description: Common prerequisites for Red Hat JBoss middleware products.
   license: license (Apache)

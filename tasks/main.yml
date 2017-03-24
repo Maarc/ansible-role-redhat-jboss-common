@@ -1,11 +1,11 @@
 ---
 
-- name: (00) Check that we are on a RedHat family node
-  fail: msg="This role requires a (RedHat) family node. But it is ({{ansible_os_family}}).'
-  when: " {{ansible_os_family}} != 'RedHat' "
+- name: "(00) Check that we are on a RedHat family node ({{ansible_os_family}})"
+  fail: msg="This role requires a (RedHat) family node. But it is ({{ansible_os_family}})."
+  when: ansible_os_family != "RedHat"
 
 - name: (00) Check the major version is v7.x.x'
-  fail: msg="This role requires a RedHat family node with version v7.x.x, But it is ({{ansible_distribution_major_version}}).'
+  fail: msg="This role requires a RedHat family node with version v7.x.x, But it is ({{ansible_distribution_major_version}})."
   when: " {{ ansible_distribution_major_version | version_compare('7', 'ne') }} "
 
 
@@ -94,6 +94,26 @@
     group: root
     mode: 0700
 
+- name: (00) copy hostname_resolve_check.sh to /root/bin
+  become: true
+  copy:
+    src: hostname_resolve_check.sh
+    dest: /root/bin/hostname_resolve_check.sh
+    owner: root
+    group: root
+    mode: 0700
+
+- name: (00) Check if hostname is resolvable
+  become: true
+  shell: "/root/bin/hostname_resolve_check.sh"
+  register: hostname_check
+
+#- debug:
+#    var: hostname_check
+
+- name: (00) Check if host name
+  fail: msg="For this role we need a resolvable hostname"
+  when: hostname_check.rc != 0
 
 ### Reminder to myself
 # "ansible_distribution": "CentOS",

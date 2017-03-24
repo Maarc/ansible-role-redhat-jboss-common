@@ -18,6 +18,9 @@ This role sets the timezone, some shell aliases and installs the following packa
 - net-tools (for netstat)
 - psmisc (for pstree)
 - vim (for vimdiff)
+- telnet
+- bc (needed for memstat.sh)
+- memstat.sh (a memory usage display utility)
 
 Please have a look at [this example](https://github.com/Maarc/ansible_middleware_soe) showing how to easily operate Red Hat JBoss middleware products using this role.
 
@@ -34,6 +37,15 @@ Dependencies
 None.
 
 
+Dependend on this role
+----------------------
+This is a base role for
+- ansible-role-redhat-jboss-eap
+- ansible-role-redhat-fuse
+
+
+
+
 Installation
 ------------
 
@@ -46,8 +58,9 @@ Role Variables
 | Name              | Default Value       | Description          |
 |-------------------|---------------------|----------------------|
 | `java_pkg_name` | `java-1.8.0-openjdk-devel` | Used Java 8 JDK. See [recommendation](https://access.redhat.com/solutions/18259). |
-| `timezone` | `Europe/Berlin` |  Timezone for the hosts and the logs. |
-| `download_dir` | `/tmp` | Directory containing all downloaded middleware  on the managed remote host. |
+| `timezone` | `Europe/Amsterdam` |  Timezone for the hosts and the logs. |
+| `download_dir` | `/tmp/rh-jboss-repo` | Directory containing all downloaded middleware  on the managed remote host. |
+| `locale` | `en_US.UTF-8` | Default Locale for system |
 
 
 License

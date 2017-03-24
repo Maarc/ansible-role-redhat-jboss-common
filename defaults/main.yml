@@ -4,7 +4,11 @@
 java_pkg_name: java-1.8.0-openjdk-devel
 
 # Timezone for the hosts and the logs
-timezone: Europe/Berlin
+timezone: Europe/Amsterdam
+
+# Locale for the hosts and the logs
+locale: en_US.UTF-8
 
 # Directory containing all downloaded artifacts on the remote host
-download_dir: '/tmp'
+# Make it a subdirectory. Easy to know for what this is used.
+download_dir: '/tmp/rh-jboss-repo'

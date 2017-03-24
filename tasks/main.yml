@@ -1,10 +1,28 @@
 ---
 
+- name: (00) Check that we are on a RedHat family node
+  fail: msg="This role requires a (RedHat) family node. But it is ({{ansible_os_family}}).'
+  when: " {{ansible_os_family}} != 'RedHat' "
+
+- name: (00) Check the major version is v7.x.x'
+  fail: msg="This role requires a RedHat family node with version v7.x.x, But it is ({{ansible_distribution_major_version}}).'
+  when: " {{ ansible_distribution_major_version | version_compare('7', 'ne') }} "
+
+
+
+### todo: check that dns resolving is all right.
+### jboss fuse is very depended on that
+#- name: (00) DNS Check that hostname resolves to ip
+
+#- debug:
+#    msg: " default ip is ({{ansible_default_ipv4.address}}) and hostname is ({{ansible_hostname}})"
+
+
 - name: (00) Fail for missing "download_dir"
   fail: msg="This role requires 'download_dir' to be set and non empty. Please refer to the README."
   when: download_dir is not defined or download_dir == ''
 
-- name: (00) Create the download_dir if it does not exist  {{ download_dir }}
+- name: "(00) Create the download_dir if it does not exist ({{ download_dir }})"
   file:
     path: "{{ download_dir }}"
     state: directory
@@ -39,13 +57,13 @@
   register: bashrc_uploaded
 
 # Set in the DEV environment during the first setup
-- name: (00) Set server timezone to {{ timezone }}
+- name: "(00) Set server timezone to ({{ timezone }})"
   become: true
   when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
   command: "timedatectl set-timezone {{ timezone }}"
 
 # Set in the DEV environment during the first setup
-- name: (00) Set server Locale to {{ locale }}
+- name: "(00) Set server Locale to ({{ locale }})"
   become: true
   when: bashrc_uploaded.changed == True and ( env is not defined or env != 'docker' )
   command: "localectl set-locale LANG={{ locale }}"
@@ -75,3 +93,12 @@
     owner: root
     group: root
     mode: 0700
+
+
+### Reminder to myself
+# "ansible_distribution": "CentOS",
+# "ansible_distribution_major_version": "7",
+# "ansible_distribution_release": "Core",
+# "ansible_distribution_version": "7.2.1511",
+# "ansible_os_family": "RedHat",
+
